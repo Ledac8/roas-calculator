@@ -3,110 +3,121 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>B2B Founder's ROAS Reality Check</title>
+    <title>B2B SaaS ROAS Reality Check</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        .green-zone { color: #10b981; }
-        .red-zone { color: #ef4444; }
+        .green-zone { color: #059669; }
+        .red-zone { color: #dc2626; }
         input[type=range] { width: 100%; cursor: pointer; }
     </style>
 </head>
-<body class="bg-slate-50 font-sans text-slate-900 p-4 md:p-10">
-    <div class="max-w-4xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden border border-slate-200">
+<body class="bg-gray-100 p-4 md:p-10 font-sans text-slate-800">
+    <div class="max-w-2xl mx-auto bg-white rounded-3xl shadow-2xl overflow-hidden border border-gray-200">
         <div class="p-8 bg-slate-900 text-white">
-            <h1 class="text-3xl font-bold">The B2B "Reality Check" Calculator</h1>
-            <p class="text-slate-400 mt-2">Stop looking at ROAS in a vacuum. Let's look at Unit Economics.</p>
+            <h1 class="text-2xl font-bold">B2B "Reality Check" Calculator</h1>
+            <p class="text-slate-400 text-sm mt-1">For Early Stage Founders: See the math beyond the click.</p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 p-8">
-            <div class="space-y-6">
+        <div class="p-8 space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                    <label class="block text-sm font-semibold mb-2">Average Deal Size ($)</label>
-                    <input type="number" id="price" value="5000" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                    <label class="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">Monthly Deal Value ($)</label>
+                    <input type="number" id="price" value="500" class="w-full p-3 bg-gray-50 border rounded-xl focus:ring-2 focus:ring-blue-500 outline-none">
                 </div>
                 <div>
-                    <label class="block text-sm font-semibold mb-2">COGS + OpEx per Deal (%)</label>
-                    <p class="text-xs text-slate-500 mb-2">Platform fees, support, onboarding costs.</p>
-                    <input type="number" id="margin" value="40" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
-                </div>
-                <div>
-                    <label class="block text-sm font-semibold mb-2">Expected Customer Lifetime (Months)</label>
-                    <input type="number" id="ltv_months" value="24" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
-                </div>
-                <div class="pt-4 border-t">
-                    <label class="block text-sm font-bold mb-2">Current ROAS: <span id="roasLabel" class="text-blue-600 text-xl">2.0x</span></label>
-                    <input type="range" id="roasSlider" min="0.1" max="10" step="0.1" value="2">
-                    <p class="text-xs text-slate-500 mt-2">Slide to see how ROAS impacts your actual profit.</p>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">COGS (Server/Support %)</label>
+                    <input type="number" id="margin" value="20" class="w-full p-3 bg-gray-50 border rounded-xl focus:ring-2 focus:ring-blue-500 outline-none">
                 </div>
             </div>
 
-            <div class="bg-slate-100 p-8 rounded-xl flex flex-col justify-between border border-slate-200">
-                <div>
-                    <h2 class="text-sm font-bold uppercase tracking-widest text-slate-500">Immediate Net Profit</h2>
-                    <div id="netProfit" class="text-5xl font-black my-4">$0</div>
-                    <p id="profitMessage" class="text-sm font-medium"></p>
+            <div>
+                <label class="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">Customer Retention (Months)</label>
+                <input type="number" id="retention" value="12" class="w-full p-3 bg-gray-50 border rounded-xl focus:ring-2 focus:ring-blue-500 outline-none">
+                <p class="text-[10px] text-gray-400 mt-1">How many months does a founder keep paying you?</p>
+            </div>
+
+            <div class="pt-6 border-t">
+                <div class="flex justify-between items-center mb-4">
+                    <label class="text-sm font-bold">Ad ROAS: <span id="roasLabel" class="text-blue-600 text-lg">2.0x</span></label>
+                </div>
+                <input type="range" id="roasSlider" min="0.5" max="10" step="0.1" value="2" class="h-2 bg-gray-200 rounded-lg appearance-none">
+            </div>
+
+            <div class="mt-8 p-6 bg-gray-50 rounded-2xl border border-gray-200">
+                <div class="flex flex-col items-center text-center">
+                    <h2 class="text-xs font-bold uppercase text-gray-400">Immediate Month 1 Profit</h2>
+                    <div id="netProfit" class="text-4xl font-black my-2">$0.00</div>
+                    <p id="profitMessage" class="text-xs font-bold uppercase tracking-tighter"></p>
                 </div>
 
-                <div class="mt-8 pt-8 border-t border-slate-300">
-                    <h2 class="text-sm font-bold uppercase tracking-widest text-slate-500 italic text-blue-600">The "Aha!" Moment (LTV View)</h2>
-                    <div id="ltvProfit" class="text-3xl font-bold mt-2 text-slate-800">$0</div>
-                    <p class="text-xs text-slate-600 mt-1">Total profit over the customer's lifetime.</p>
-                    <div class="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
-                        <p id="verdict" class="text-sm text-blue-900 font-medium"></p>
+                <div class="mt-6 pt-6 border-t border-gray-200 grid grid-cols-2 gap-4">
+                    <div>
+                        <p class="text-[10px] font-bold text-gray-400 uppercase">Total Lifetime Value (LTV)</p>
+                        <p id="ltvDisplay" class="text-xl font-bold text-slate-800">$0</p>
+                    </div>
+                    <div>
+                        <p class="text-[10px] font-bold text-blue-500 uppercase">Lifetime Net Profit</p>
+                        <p id="ltvProfitDisplay" class="text-xl font-bold text-blue-600">$0</p>
                     </div>
                 </div>
             </div>
+            
+            <p id="verdict" class="text-center text-xs text-gray-500 italic px-4"></p>
         </div>
     </div>
 
     <script>
         const priceInput = document.getElementById('price');
         const marginInput = document.getElementById('margin');
-        const ltvMonthsInput = document.getElementById('ltv_months');
+        const retentionInput = document.getElementById('retention');
         const roasSlider = document.getElementById('roasSlider');
         const roasLabel = document.getElementById('roasLabel');
         const netProfitDisplay = document.getElementById('netProfit');
-        const ltvProfitDisplay = document.getElementById('ltvProfit');
+        const ltvDisplay = document.getElementById('ltvDisplay');
+        const ltvProfitDisplay = document.getElementById('ltvProfitDisplay');
         const profitMessage = document.getElementById('profitMessage');
         const verdict = document.getElementById('verdict');
 
         function calculate() {
-            const price = parseFloat(priceInput.value);
-            const marginPercent = parseFloat(marginInput.value) / 100;
-            const ltvMonths = parseFloat(ltvMonthsInput.value);
+            const mrr = parseFloat(priceInput.value) || 0;
+            const cogsPercent = parseFloat(marginInput.value) / 100 || 0;
+            const months = parseFloat(retentionInput.value) || 1;
             const roas = parseFloat(roasSlider.value);
             
             roasLabel.innerText = roas.toFixed(1) + 'x';
 
-            // Calculations
-            const adSpendPerSale = price / roas;
-            const cogsDollars = price * marginPercent;
-            const immediateProfit = price - adSpendPerSale - cogsDollars;
+            const adSpendPerSale = mrr / roas;
+            const cogsDollars = mrr * cogsPercent;
             
-            // LTV Calculation: (Price * months) - (COGS * months) - AdSpend
-            const totalRevenue = price * ltvMonths;
-            const totalCogs = cogsDollars * ltvMonths;
-            const lifetimeProfit = totalRevenue - totalCogs - adSpendPerSale;
+            // Immediate (Month 1)
+            const immediateProfit = mrr - adSpendPerSale - cogsDollars;
+            
+            // Lifetime
+            const ltv = mrr * months;
+            const totalCogs = cogsDollars * months;
+            const lifetimeProfit = ltv - totalCogs - adSpendPerSale;
 
-            // Update UI
-            netProfitDisplay.innerText = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(immediateProfit);
-            ltvProfitDisplay.innerText = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(lifetimeProfit);
+            // Formatting
+            const formatter = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
+            
+            netProfitDisplay.innerText = formatter.format(immediateProfit);
+            ltvDisplay.innerText = formatter.format(ltv);
+            ltvProfitDisplay.innerText = formatter.format(lifetimeProfit);
 
             if (immediateProfit > 0) {
-                netProfitDisplay.className = "text-5xl font-black my-4 green-zone";
-                profitMessage.innerText = "You are profitable on Day 1! 🚀";
-                profitMessage.className = "text-sm font-medium green-zone";
+                netProfitDisplay.className = "text-4xl font-black my-2 green-zone";
+                profitMessage.innerText = "Profitable on Day 1 🚀";
+                profitMessage.className = "text-xs font-bold uppercase tracking-tighter green-zone";
             } else {
-                netProfitDisplay.className = "text-5xl font-black my-4 red-zone";
-                profitMessage.innerText = "Losing money on the first transaction. ⚠️";
-                profitMessage.className = "text-sm font-medium red-zone";
+                netProfitDisplay.className = "text-4xl font-black my-2 red-zone";
+                profitMessage.innerText = "Burning cash in Month 1 ⚠️";
+                profitMessage.className = "text-xs font-bold uppercase tracking-tighter red-zone";
             }
 
-            const breakEvenRoas = 1 / (1 - marginPercent);
-            verdict.innerHTML = `Break-even ROAS: <strong>${breakEvenRoas.toFixed(2)}x</strong>. Even if immediate ROAS is low, your LTV makes this deal worth <strong>${new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(lifetimeProfit)}</strong>.`;
+            verdict.innerText = `Even if Month 1 is red, this customer is worth ${formatter.format(lifetimeProfit)} in total profit. If your CAC is ${formatter.format(adSpendPerSale)}, this is a bargain.`;
         }
 
-        [priceInput, marginInput, ltvMonthsInput, roasSlider].forEach(el => el.addEventListener('input', calculate));
+        [priceInput, marginInput, retentionInput, roasSlider].forEach(el => el.addEventListener('input', calculate));
         calculate();
     </script>
 </body>
